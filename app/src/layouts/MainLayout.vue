@@ -30,24 +30,24 @@
         <q-img
           class="q-mb-sm"
           style="max-height: 150px"
-          fit="contain" 
+          fit="contain"
           src="https://tarkov-gunsmith.com/img/logo1-transparent-thick.58d66466.svg"
         />
 
-        <div 
-          v-if="!miniState || $q.screen.lt.sm" 
+        <div
+          v-if="!miniState || $q.screen.lt.sm"
           class="text-center q-mb-sm primary"
           style="font-size: 25px"
         >
-            Tarkov Lens
+          Tarkov Lens
         </div>
 
         <q-separator></q-separator>
 
-        <q-item 
+        <q-item
           v-for="nav in navItems"
           :key="nav.id"
-          v-ripple 
+          v-ripple
           clickable
           class="primary"
           :active="activeNav === nav.id"
@@ -63,6 +63,7 @@
             {{ nav.title }}
           </q-item-section>
         </q-item>
+        <Search />
       </q-list>
 
       <div class="absolute" style="top: 15px; right: -17px">
@@ -84,24 +85,27 @@
 </template>
 
 <script lang="ts">
-import { RootState } from 'src/store/RootState'
-import { defineComponent, ref } from 'vue'
-import { useStore } from 'vuex'
-import { useQuasar } from 'quasar'
-import { SimulatorRoutePath } from 'src/enums/route'
-import { Icon } from 'src/enums/icon'
+import { RootState } from 'src/store/RootState';
+import { defineComponent, ref } from 'vue';
+import { useStore } from 'vuex';
+import { useQuasar } from 'quasar';
+import { SimulatorRoutePath } from 'src/enums/route';
+import { Icon } from 'src/enums/icon';
+import Search from '../components/items/Search.vue';
 
 export default defineComponent({
   name: 'MainLayout',
-  components: { },
+  components: {
+    Search,
+  },
 
-  setup () {
-    const $q = useQuasar()
-    const store = useStore<RootState>()
-    const showDrawer = ref(false)
-    const chevronIcon = ref('chevron_left')
-    const miniState = ref(false)
-    const activeNav = ref(0)
+  setup() {
+    const $q = useQuasar();
+    const store = useStore<RootState>();
+    const showDrawer = ref(false);
+    const chevronIcon = ref('chevron_left');
+    const miniState = ref(false);
+    const activeNav = ref(0);
 
     const navItems = [
       {
@@ -109,45 +113,43 @@ export default defineComponent({
         title: 'Home',
         icon: 'mdi-home',
         activeClass: 'white',
-        link: '/'
+        link: '/',
       },
       {
         id: 2,
         title: 'Pen Chance',
         icon: Icon.Penetration,
         activeClass: 'white',
-        link: SimulatorRoutePath.PenetrationChance
+        link: SimulatorRoutePath.PenetrationChance,
       },
       {
         id: 3,
         title: 'Damage Simulator',
         icon: Icon.Damage,
         activeClass: 'white',
-        link: SimulatorRoutePath.Damage
-      }
-    ]
+        link: SimulatorRoutePath.Damage,
+      },
+    ];
 
     // example getter method (non-statically typed)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     //console.log(store.getters['layout/getTitle'])
 
-
-    function setActiveNav (navId: number) {
-      activeNav.value = navId
+    function setActiveNav(navId: number) {
+      activeNav.value = navId;
     }
 
-    function toggleDrawer () {
+    function toggleDrawer() {
       if ($q.screen.lt.sm) {
-        showDrawer.value = !showDrawer.value
-      }
-      else {
-        miniState.value = !miniState.value
+        showDrawer.value = !showDrawer.value;
+      } else {
+        miniState.value = !miniState.value;
       }
 
       if (chevronIcon.value == 'chevron_right') {
-        chevronIcon.value = 'chevron_left'
+        chevronIcon.value = 'chevron_left';
       } else {
-        chevronIcon.value = 'chevron_right'
+        chevronIcon.value = 'chevron_right';
       }
     }
 
@@ -159,8 +161,8 @@ export default defineComponent({
       miniState,
       activeNav,
       navItems,
-      setActiveNav
-    }
-  }
-})
+      setActiveNav,
+    };
+  },
+});
 </script>

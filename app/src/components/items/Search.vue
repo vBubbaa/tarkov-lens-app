@@ -1,0 +1,74 @@
+<template>
+  <q-item v-ripple clickable>
+    <q-select
+      class="select"
+      v-model="model"
+      use-input
+      input-debounce="0"
+      :options="options"
+      @filter="filterFn"
+      option-label="name"
+    >
+      <template v-slot:no-option>
+        <q-item>
+          <q-item-section class="text-grey">No results</q-item-section>
+        </q-item>
+      </template>
+      <template #prepend>
+        <q-icon name="mdi-magnify" />
+      </template>
+    </q-select>
+  </q-item>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { ref } from 'vue';
+
+export default defineComponent({
+  name: 'Search',
+  setup() {
+    const fetchedItems = [
+      {
+        id: 1,
+        name: 'Gun',
+      },
+      {
+        id: 2,
+        name: 'Ammo',
+      },
+    ];
+    const options = ref(fetchedItems);
+
+    return {
+      model: ref(null),
+      options,
+
+      filterFn(val: string, update: any) {
+        if (val === '') {
+          update(() => {
+            options.value = fetchedItems;
+          });
+          return;
+        }
+
+        update(() => {
+          const needle = val.toLowerCase();
+          options.value = fetchedItems.filter(
+            (v) => v.name.toLowerCase().indexOf(needle) > -1
+          );
+        });
+      },
+    };
+  },
+});
+</script>
+
+<style scoped>
+.select {
+  width: 100%;
+}
+</style>
+
+function ref(arg0: null) { throw new Error('Function not implemented.'); }
+function ref(arg0: null) { throw new Error('Function not implemented.'); }
