@@ -24,10 +24,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { ref } from 'vue';
+import useItemService from 'src/hooks/useItemService';
 
 export default defineComponent({
   name: 'Search',
   setup() {
+    const { getItemByName } = useItemService();
+
     const fetchedItems = [
       {
         id: 1,
@@ -44,20 +47,12 @@ export default defineComponent({
       model: ref(null),
       options,
 
-      filterFn(val: string, update: any) {
-        if (val === '') {
-          update(() => {
-            options.value = fetchedItems;
+      filterFn(val: string) {
+        if (val.length > 2) {
+          getItemByName(val).then((data) => {
+            console.log(data);
           });
-          return;
         }
-
-        update(() => {
-          const needle = val.toLowerCase();
-          options.value = fetchedItems.filter(
-            (v) => v.name.toLowerCase().indexOf(needle) > -1
-          );
-        });
       },
     };
   },
